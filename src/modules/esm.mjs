@@ -1,23 +1,35 @@
 import path from "node:path";
 import { release, version } from "node:os";
 import { createServer as createServerHttp } from "node:http";
-import url from 'node:url';
+import url from "node:url";
 
 import "./files/c.cjs";
 
-import aJson from "./files/a.json" with { type: "json" };
-import bJson from "./files/b.json" with { type: "json" };
-
 const random = Math.random();
 
-const unknownObject = random > 0.5 ? aJson : bJson;
+let unknownObject;
+if (random > 0.5) {
+  const { default: data } = await import("./files/a.json", {
+    with: { type: "json" },
+  });
+  unknownObject = data;
+} else {
+  const { default: data } = await import("./files/b.json", {
+    with: { type: "json" },
+  });
+  unknownObject = data;
+}
 
 console.log(`Release ${release()}`);
 console.log(`Version ${version()}`);
 console.log(`Path segment separator is "${path.sep}"`);
 
 console.log(`Path to current file is ${url.fileURLToPath(import.meta.url)}`);
-console.log(`Path to current directory is ${path.dirname(url.fileURLToPath(import.meta.url))}`);
+console.log(
+  `Path to current directory is ${path.dirname(
+    url.fileURLToPath(import.meta.url)
+  )}`
+);
 
 const myServer = createServerHttp((_, res) => {
   res.end("Request accepted");
