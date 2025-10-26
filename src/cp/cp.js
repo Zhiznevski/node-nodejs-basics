@@ -1,11 +1,16 @@
 import { spawn } from "node:child_process";
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 
-import { fileURLToPath } from "url";
-const _dirname = dirname(fileURLToPath(import.meta.url));
+import { getDirname } from "../utils/getDirname.js";
+
+const FOLDER_NAME = "files";
+const FILE_NAME = "script.js";
 
 const spawnChildProcess = async (args) => {
-  const child = spawn("node", [join(_dirname, "files", "script.js"), ...args]);
+  const child = spawn("node", [
+    join(getDirname(import.meta.url), FOLDER_NAME, FILE_NAME),
+    ...args,
+  ]);
 
   process.stdin.pipe(child.stdin);
   child.stdout.pipe(process.stdout);
