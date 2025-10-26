@@ -2,17 +2,11 @@ import { createReadStream } from "node:fs";
 import { stdout } from "node:process";
 import { join } from "node:path";
 import { pipeline } from "node:stream/promises";
+import { getDirname } from "../utils/getDirname.js";
 
+const FOLDER_NAME = "files";
 const FILE_NAME = "fileToRead.txt";
-const FILE_PATH = join("src", "streams", "files", FILE_NAME);
-const input = createReadStream(FILE_PATH);
-
-// const read = async () => {
-//   input.on("readable", () => {
-//     const data = input.read();
-//     if (data) stdout.write(data);
-//   });
-// };
+const FILE_PATH = join(getDirname(import.meta.url), FOLDER_NAME, FILE_NAME);
 
 const read = async () => {
   try {

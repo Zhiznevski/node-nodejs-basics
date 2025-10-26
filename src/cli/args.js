@@ -1,18 +1,14 @@
 const parseArgs = () => {
-  const map = {};
-  const args = process.argv;
-  for (let i = 0; i < args.length; i++) {
-    if (args[i].startsWith("--")) {
-      const key = args[i].slice(2);
-      map[key] = args[i + 1];
-    }
-  }
-  let res = "";
-  for (const key in map) {
-    res += `${key} is ${map[key]}, `;
-  }
+  const args = process.argv.slice(2);
 
-  console.log(res.trim().slice(0, -2));
+  const res = args.reduce((acc, curr, index, arr) => {
+    if (curr.startsWith("--")) {
+      return acc + `${curr.slice(2)} is ${arr[index + 1]}` + ", ";
+    }
+    return acc;
+  }, "");
+
+  console.log(res.slice(0, -2));
 };
 
 parseArgs();

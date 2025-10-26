@@ -4,7 +4,7 @@ import { pipeline } from "node:stream/promises";
 
 const reverse = new Transform({
   transform(data, _, cb) {
-    this.push(data.toString().split("").reverse().join(""));
+    this.push(data.toString().split("").reverse().join("") + "\n");
     cb();
   },
 });
